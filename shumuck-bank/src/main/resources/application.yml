@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: shmuck-bank
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orders_db
+    username: quarkus-api
+    password: quarkus-api
+  jpa:
+    hibernate:
+      ddl-auto: 'update'
+      show-sql: true
+server:
+  port: 9000
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0  # 100% requests are traced
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+logging:
+  level:
+    org.springframework.cloud.openfeign: DEBUG
+    feign.Request: DEBUG
