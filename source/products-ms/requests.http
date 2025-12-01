@@ -1,0 +1,11 @@
+POST http://localhost:8090/api/product
+Content-Type: application/json
+
+{ 
+    "name": "Basket Ball",
+    "price": 20.49
+}
+
+
+### 
+GET http://localhost:8090/api/product

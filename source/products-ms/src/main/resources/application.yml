@@ -1,0 +1,29 @@
+spring:
+    application:
+        name: products-ms
+    mongodb:
+        uri: mongodb://admin:admin123@localhost:27017/eventd_ms?authSource=admin
+        
+    kafka:
+        producer:
+            bootstrap-servers:
+                - localhost:9092
+                - localhost:9093
+                - localhost:9094
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        consumer:
+            bootstrap-servers:
+                - localhost:9092
+                - localhost:9093
+                - localhost:9094
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            properties:
+                spring:
+                    json:
+                        trusted:
+                            packages: "*"
+
+server:
+    port: 8090
