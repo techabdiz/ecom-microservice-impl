@@ -3,11 +3,10 @@ package com.deadspider.services;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -29,14 +28,30 @@ public class ProductsService {
 
     public void createProduct(Product p) { 
         p = repo.save(p);
+        if(p.getProductId() == null){ 
+            p.setProductId(p.getId());
+        }
+        p = repo.save(p);
 
         ProductPostedEvent event =  ProductPostedEvent.builder()
             .eventId(UUID.randomUUID().toString())
-            .productId(p.getId())
+            .productId(p.getProductId())
             .productName(p.getName())
             .productPrice(p.getPrice())
         .build();
 
+        if (p.getQuantity() == null) { 
+            p.setQuantity(1);
+        } 
+
+        IntStream.range(0, p.getQuantity())
+            .mapToObj(i->event)
+            .forEach(this::pushProductEvent);
+
+        
+    }
+
+    public void pushProductEvent(ProductPostedEvent event){ 
         CompletableFuture<SendResult<String, ProductPostedEvent>> kafkaResponse =
           template.send("com.deadspider.products.topic", event.getEventId(), event);
         

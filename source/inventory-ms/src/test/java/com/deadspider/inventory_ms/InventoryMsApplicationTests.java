@@ -1,10 +1,10 @@
-package com.deadspider;
+package com.deadspider.inventory_ms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductsMsApplicationTests {
+class InventoryMsApplicationTests {
 
 	@Test
 	void contextLoads() {

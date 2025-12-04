@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: inventory-ms
+  mongodb:
+        uri: mongodb://admin:admin123@localhost:27017/eventd_ms?authSource=admin
+  kafka:
+    producer:
+      bootstrap-servers:
+          - localhost:9092
+          - localhost:9093
+          - localhost:9094
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 20
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+          retry:
+              backoff:
+                  ms: 200
+          delivery:
+              timeout:
+                  ms: 120000
+          linger:
+              ms: 0 #batch time
+          request:
+              timeout:
+                  ms: 30000 # request timeout
+#    consumer:
+#      bootstrap-servers:
+#        - localhost:9092
+#        - localhost:9093
+#        - localhost:9094
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      group-id: inventory-ms
+#      properties:
+#        spring:
+#          json:
+#            trusted:
+#              packages: "*"
+
+server:
+    port: 8091

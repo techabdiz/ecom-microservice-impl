@@ -1,11 +1,14 @@
-POST http://localhost:8090/api/product
+@PRODUCT_URL=http://localhost:8090
+
+### 
+POST {{PRODUCT_URL}}/api/product
 Content-Type: application/json
 
 { 
-    "name": "Basket Ball",
-    "price": 20.49
+    "name": null,
+    "price": 20
 }
 
 
 ### 
-GET http://localhost:8090/api/product
+GET {{PRODUCT_URL}}/api/product

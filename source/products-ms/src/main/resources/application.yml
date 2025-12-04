@@ -2,25 +2,43 @@ spring:
     application:
         name: products-ms
     mongodb:
-        uri: mongodb://admin:admin123@localhost:27017/eventd_ms?authSource=admin
+        uri: mongodb://admin:admin123@192.168.1.5:27017/eventd_ms?authSource=admin
         
     kafka:
-        producer:
-            bootstrap-servers:
-                - localhost:9092
-                - localhost:9093
-                - localhost:9094
-            key-serializer: org.apache.kafka.common.serialization.StringSerializer
-            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#        producer:
+#            bootstrap-servers:
+#                - localhost:9092
+#                - localhost:9093
+#                - localhost:9094
+#            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#            acks: all
+#            retries: 20
+#            properties:
+#                retry:
+#                    backoff:
+#                        ms: 200
+#                delivery:
+#                    timeout:
+#                        ms: 120000
+#                linger:
+#                    ms: 0 #batch time
+#                request:
+#                    timeout:
+#                        ms: 30000 # request timeout
         consumer:
             bootstrap-servers:
-                - localhost:9092
-                - localhost:9093
-                - localhost:9094
+                - 192.168.1.5:9092
+                - 192.168.1.5:9093
+                - 192.168.1.5:9094
             key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
             properties:
                 spring:
+                    deserializer:
+                        value:
+                            delegate:
+                                class: org.springframework.kafka.support.serializer.JsonDeserializer
                     json:
                         trusted:
                             packages: "*"
